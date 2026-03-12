@@ -7,30 +7,29 @@ import (
 	"testing"
 )
 
-
 func TestGetAPIKey(t *testing.T) {
 	tests := map[string]struct {
-		input http.Header
+		input   http.Header
 		wantVal string
 		wantErr error
 	}{
 		"simple": {
-			input: http.Header{"Authorization": []string{"ApiKey NcvXrl"}},
+			input:   http.Header{"Authorization": []string{"ApiKey NcvXrl"}},
 			wantVal: "NcvXrl",
 			wantErr: nil,
 		},
 		"no auth header": {
-			input: http.Header{"Auth": []string{"ApiKey NcvXrl"}},
+			input:   http.Header{"Auth": []string{"ApiKey NcvXrl"}},
 			wantVal: "",
 			wantErr: ErrNoAuthHeaderIncluded,
 		},
 		"auth header too short": {
-			input: http.Header{"Authorization": []string{"ApiKey:NcvXrl"}},
+			input:   http.Header{"Authorization": []string{"ApiKey:NcvXrl"}},
 			wantVal: "",
 			wantErr: errors.New("malformed authorization header"),
 		},
 		"wrong apikey name": {
-			input: http.Header{"Authorization": []string{"ApiKee NcvXrl"}},
+			input:   http.Header{"Authorization": []string{"ApiKee NcvXrl"}},
 			wantVal: "",
 			wantErr: errors.New("malformed authorization header"),
 		},
